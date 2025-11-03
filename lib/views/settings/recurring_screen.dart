@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class RecurringScreen extends StatelessWidget {
   const RecurringScreen({super.key});
@@ -29,6 +30,16 @@ class RecurringScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.close),
+          onPressed: () {
+            if (Navigator.of(context).canPop()) {
+              Navigator.of(context).pop();
+            } else {
+              context.go('/profile');
+            }
+          },
+        ),
         title: const Text('Lançamentos Recorrentes'),
         actions: [
           // Botão para adicionar novo recorrente
