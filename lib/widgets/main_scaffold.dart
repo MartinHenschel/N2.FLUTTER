@@ -72,16 +72,18 @@ class MainScaffold extends StatelessWidget {
         },
       ),
 
-      // O Floating Action Button (FAB) é ótimo para adicionar transações rapidamente
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Navega para a tela de Adicionar Despesa (ou Receita, você escolhe o padrão)
-          context.go('/add-expense');
+          // Usar push para empilhar a tela de adicionar despesa.
+          // Assim, `context.pop()` na tela de formulário funcionará e
+          // o botão 'Cancelar' voltará corretamente para a tela anterior.
+          context.push('/add-expense');
         },
         child: const Icon(Icons.add),
       ),
-      // Centraliza o FAB na barra
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // Posiciona o FAB flutuando acima da barra para não sobrepor o item central
+      // (evita que o botão '+' fique em cima da opção 'Metas').
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
