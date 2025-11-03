@@ -70,21 +70,6 @@ class ProfileScreen extends StatelessWidget {
                       context.go('/categories');
                     },
                   ),
-
-                  // Item: Exportar Dados (Exemplo de funcionalidade)
-                  ListTile(
-                    leading: const Icon(Icons.download),
-                    title: const Text('Exportar Dados'),
-                    trailing: const Icon(Icons.arrow_forward_ios),
-                    onTap: () {
-                      // Ação simulada: mostra um aviso
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Dados exportados com sucesso!'),
-                        ),
-                      );
-                    },
-                  ),
                 ],
               ),
             ),
