@@ -1,35 +1,64 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class GoalsScreen extends StatelessWidget {
+class GoalsScreen extends StatefulWidget {
   const GoalsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> mockGoals = [
-      {
-        'title': 'Férias em Fernando de Noronha',
-        'description': 'Viagem dos sonhos com a família',
-        'target': 8000.0,
-        'current': 2400.0,
-        'dueDate': DateTime.now().add(const Duration(days: 200)),
-      },
-      {
-        'title': 'Fundo de Emergência',
-        'description': '3 meses de despesas',
-        'target': 12000.0,
-        'current': 7200.0,
-        'dueDate': DateTime.now().add(const Duration(days: 365)),
-      },
-      {
-        'title': 'Notebook novo',
-        'description': 'Substituir o equipamento atual',
-        'target': 4500.0,
-        'current': 4500.0,
-        'dueDate': DateTime.now().add(const Duration(days: 30)),
-      },
-    ];
+  State<GoalsScreen> createState() => _GoalsScreenState();
+}
 
+class _GoalsScreenState extends State<GoalsScreen> {
+  List<Map<String, dynamic>> mockGoals = [
+    {
+      'title': 'Férias em Fernando de Noronha',
+      'description': 'Viagem dos sonhos com a família',
+      'target': 8000.0,
+      'current': 2400.0,
+      'dueDate': DateTime.now().add(const Duration(days: 200)),
+    },
+    {
+      'title': 'Fundo de Emergência',
+      'description': '3 meses de despesas',
+      'target': 12000.0,
+      'current': 7200.0,
+      'dueDate': DateTime.now().add(const Duration(days: 365)),
+    },
+    {
+      'title': 'Notebook novo',
+      'description': 'Substituir o equipamento atual',
+      'target': 4500.0,
+      'current': 4500.0,
+      'dueDate': DateTime.now().add(const Duration(days: 30)),
+    },
+  ];
+
+  Future<void> _confirmDelete(int index) async {
+    final goal = mockGoals[index];
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Excluir meta'),
+        content: Text('Deseja excluir "${goal['title']}"?'),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancelar')),
+          TextButton(onPressed: () => Navigator.of(context).pop(true), child: const Text('Excluir')),
+        ],
+      ),
+    );
+
+    if (result == true) {
+      setState(() {
+        mockGoals.removeAt(index);
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Meta excluída')));
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Metas de Economia')),
       floatingActionButton: FloatingActionButton(
@@ -109,6 +138,10 @@ class GoalsScreen extends StatelessWidget {
                                       context.push('/new-goal');
                                     },
                                     icon: const Icon(Icons.edit, size: 20),
+                                  ),
+                                  IconButton(
+                                    onPressed: () => _confirmDelete(index),
+                                    icon: const Icon(Icons.delete, size: 20, color: Colors.redAccent),
                                   ),
                                 ],
                               )
